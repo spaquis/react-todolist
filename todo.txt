@@ -1,0 +1,5 @@
+- Find Optimization React Context (Get only part of state)
+- Go on this sample : Clear Input After Add / Filter
+- try to call a fetch / Service Mocking Jest
+- New Method Component Will Update
+- Type Use Effect
