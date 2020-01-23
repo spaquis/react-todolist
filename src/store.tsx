@@ -35,7 +35,7 @@ const { Provider } = store;
  * State Provider
  * @param param0
  */
-const StateProvider = ({ children }: StateProviderProps) => {
+const StateProvider: React.FC<StateProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer<
     React.Reducer<TodoListState, TodoActionType>
   >(todoReducers, initialState);
@@ -44,4 +44,3 @@ const StateProvider = ({ children }: StateProviderProps) => {
 };
 
 export { store, StateProvider };
-

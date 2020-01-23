@@ -14,21 +14,30 @@ type TodoItemComponentProps = {
 /**
  * Check Item (check box + name)
  */
-const TodoItemComponent: React.FC<TodoItemComponentProps> = ({ todo, onCheckedTodo, onRemoveTodo }) => {
+const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
+  todo,
+  onCheckedTodo,
+  onRemoveTodo
+}) => {
   // On Press Checked
   const onPressChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
     onCheckedTodo(todo.id, e.target.checked);
   };
-  
+
   // On Press Remove
-  const onPressRemove = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onPressRemove = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     onRemoveTodo(todo.id);
-  }
+  };
 
   return (
     <>
       <RenderCount componentName={`TodoItem: ${todo.id}`} />
-      <div className="d-flex flex-row justify-content-between align-items-center mt-2">
+      <div
+        data-testid="todo-container"
+        className="d-flex flex-row justify-content-between align-items-center mt-2"
+      >
         <div className="d-flex flex-row justify-content-start align-items-center mt-2">
           <input
             data-testid="todo-checkbox"
@@ -39,10 +48,29 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({ todo, onCheckedTo
           />
           <span data-testid="todo-name">{todo.name}</span>
         </div>
-        <button data-testid="todo-remove-button" onClick={onPressRemove} className="btn btn-danger">Remove</button>
+        <button
+          data-testid="todo-remove-button"
+          onClick={onPressRemove}
+          className="btn btn-danger"
+        >
+          Remove
+        </button>
       </div>
     </>
   );
 };
 
-export default TodoItemComponent;
+// const todoPropsAreEqual = (
+//   prevTodo: Readonly<React.PropsWithChildren<TodoItemComponentProps>>,
+//   nextTodo: Readonly<React.PropsWithChildren<TodoItemComponentProps>>
+// ) => {
+//   console.log(prevTodo);
+//   console.log(nextTodo);
+//   return (
+//     prevTodo.todo.id === nextTodo.todo.id &&
+//     prevTodo.todo.name === nextTodo.todo.name &&
+//     prevTodo.todo.checked === nextTodo.todo.checked
+//   );
+// };
+
+export default React.memo(TodoItemComponent);

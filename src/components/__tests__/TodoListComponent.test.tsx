@@ -21,37 +21,40 @@ const todos = [
 
 /**
  * Render TodoListComponent with React Context Mock
- * @param state 
+ * @param state
  */
 const renderTodoList = (state: TodoListState) => {
-    const dispatch = jest.fn();
-    return render(
-        <store.Provider value={{state, dispatch}}>
-          <TodoListComponent />
-        </store.Provider>
-    )
-}
+  const dispatch = jest.fn();
+  return render(
+    <store.Provider value={{ state, dispatch }}>
+      <TodoListComponent />
+    </store.Provider>
+  );
+};
 
 describe("Todo List Component Executions test", () => {
   test("Correct Display", () => {
     // Prepare
     const state: TodoListState = {
-        todoList: todos,
-        currentFilter: 'ALL'
-    }
+      todoList: todos,
+      currentFilter: "ALL"
+    };
 
     // Act
-    const { getByTestId } = renderTodoList(state);
-    
+    const { container, getByTestId, getAllByTestId } = renderTodoList(state);
+
     // Asserts
+    // Two Todo
+    const todoItems = getAllByTestId("todo-container");
+    expect(todoItems).toHaveLength(2);
   });
 
   test("Add Todo Behaviour", () => {
     // Prepare
     const state: TodoListState = {
-        todoList: todos,
-        currentFilter: 'ALL'
-    }
+      todoList: todos,
+      currentFilter: "ALL"
+    };
 
     // Act
     const { getByTestId } = renderTodoList(state);

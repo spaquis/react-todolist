@@ -85,6 +85,10 @@ describe("TodoReducers Test Execution", () => {
       ...state.todoList[0],
       checked: true
     });
+    // Check not mutable previous state
+    expect(state.todoList[0]).toEqual({
+      ...state.todoList[0]
+    });
   });
 
   test("Apply Filter", () => {

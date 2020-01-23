@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { store } from "../store";
 import { AddTodoType } from "../types";
 import { TodoListActionEnum } from "../ActionEnum";
@@ -12,6 +12,7 @@ const getRandomInt = (max: number): number => {
  * Add Todo Form
  */
 const AddTodoForm: React.FC = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState<string>();
   const { dispatch } = useContext(store);
 
@@ -31,7 +32,9 @@ const AddTodoForm: React.FC = () => {
           checked: false
         }
       };
-      return dispatch(action);
+      dispatch(action);
+      setName("");
+      return;
     }
     alert("Name is mandatory");
   };
@@ -40,6 +43,7 @@ const AddTodoForm: React.FC = () => {
     <div>
       <RenderCount componentName="AddTodo" />
       <input
+        ref={inputRef}
         type="text"
         onChange={onChangeTodoName}
         placeholder="Fill a task"

@@ -23,60 +23,76 @@ const TodoList = () => {
   const { todoList, currentFilter } = state;
 
   // Toggle a Todo
-  const onCheckedTodo = useCallback((id: number, checked: boolean) => {
-    const action: ToggleTodoType = {
-      type: TodoListActionEnum.TOGGLE_TODO_ITEM,
-      payload: { id, checked }
-    };
-    dispatch(action);
-  }, [dispatch]);
+  const onCheckedTodo = useCallback(
+    (id: number, checked: boolean) => {
+      const action: ToggleTodoType = {
+        type: TodoListActionEnum.TOGGLE_TODO_ITEM,
+        payload: { id, checked }
+      };
+      dispatch(action);
+    },
+    [dispatch]
+  );
 
   // Remove a Todo
-  const onRemoveTodo = useCallback((id: number) => {
-    const action: RemoveTodoType = {
-      type: TodoListActionEnum.REMOVE_TODO_ITEM,
-      payload: id
-    };
-    dispatch(action);
-  }, [dispatch]);
+  const onRemoveTodo = useCallback(
+    (id: number) => {
+      const action: RemoveTodoType = {
+        type: TodoListActionEnum.REMOVE_TODO_ITEM,
+        payload: id
+      };
+      dispatch(action);
+    },
+    [dispatch]
+  );
 
   // Apply new filter
-  const onChangeFilter = useCallback((filter: FilterType) => {
-    const action: ApplyFilterType = {
-      type: TodoListActionEnum.APPLY_FILTER,
-      payload: filter
-    };
-    dispatch(action);
-  }, [dispatch]);
+  const onChangeFilter = useCallback(
+    (filter: FilterType) => {
+      const action: ApplyFilterType = {
+        type: TodoListActionEnum.APPLY_FILTER,
+        payload: filter
+      };
+      dispatch(action);
+    },
+    [dispatch]
+  );
 
   const applyFilter = (todo: TodoItem) => {
-    if (currentFilter === 'ALL') {
-      return todo
-    }
-    if (currentFilter === 'ACTIVE' && !todo.checked) {
+    if (currentFilter === "ALL") {
       return todo;
     }
-    if (currentFilter === 'COMPLETED' && todo.checked) {
+    if (currentFilter === "ACTIVE" && !todo.checked) {
+      return todo;
+    }
+    if (currentFilter === "COMPLETED" && todo.checked) {
       return todo;
     }
     return null;
-  }
+  };
+
+  const renderTodo = useCallback(
+    (t: TodoItem) => (
+      <TodoItemComponent
+        key={t.id}
+        todo={t}
+        onCheckedTodo={onCheckedTodo}
+        onRemoveTodo={onRemoveTodo}
+      />
+    ),
+    [onCheckedTodo, onRemoveTodo]
+  );
 
   // Filters the list
-  const filteredTodoList = todoList.filter((todo: TodoItem) => applyFilter(todo));
+  const filteredTodoList = todoList.filter((todo: TodoItem) =>
+    applyFilter(todo)
+  );
 
   return (
     <div className="todolist-container">
       <RenderCount componentName="todoList" />
       <AddTodoForm />
-      {filteredTodoList.map((t: TodoItem) => (
-        <TodoItemComponent
-          key={t.id}
-          todo={t}
-          onCheckedTodo={onCheckedTodo}
-          onRemoveTodo={onRemoveTodo}
-        />
-      ))}
+      {filteredTodoList.map((t: TodoItem) => renderTodo(t))}
       <div className="btn-group mt-5" role="group" aria-label="Basic example">
         {availableFilters.map((filter: FilterType) => (
           <button
